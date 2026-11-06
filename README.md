@@ -39,12 +39,14 @@ task_manager/
 └── .env.example
 
 ## Prerequisites
+
 Node.js 22 or newer (and npm)
 A PostgreSQL database. This project uses a free Neon project, but any PostgreSQL 14+ database works.
 Git
 
 A.
- # Installing dependencies
+
+# Installing dependencies
 
 Clone the repository, then install the backend and frontend dependencies separately.
 
@@ -64,7 +66,8 @@ B. # Configuring environment variables
 
 Real credentials are never committed. Each app ships a .env.example listing the required variable names. Copy it to .env and fill in the values.
 
-C. 
+C.
+
 # Setting up the database
 
 Run these from the `backend/` folder after `DATABASE_URL` is set in `.env`:
@@ -90,7 +93,8 @@ npm run db:migrate -- --name describe_your_change
 > **Note:** `npm run db:seed` deletes all existing tasks first so the script can be re-run safely. Do not run it against a database holding data you want to keep.
 
 D.
- # Running the backend and frontend
+
+# Running the backend and frontend
 
 # Backend
 
@@ -118,7 +122,8 @@ Loading indicators and error messages, with a retry button when the list fails t
 
 Responsive layout: the form and list stack on small screens and sit side by
 
-E. 
+E.
+
 # Running the automated tests
 
 The backend tests are written with Mocha, Chai and Supertest. They are integration tests: each request goes through the real Express app, services and repository to a real PostgreSQL test database.
@@ -127,10 +132,11 @@ Before the first run
 TEST_DATABASE_URL must be set in backend/.env and must point to a database that is not your application database.
 The tasks table must exist in that database
 
-# RUN
+## RUN
 
-cd backend
-npm test
+## cd backend
+
+  npm test
 
 3. **The SQL database creation script.**
 
@@ -193,13 +199,6 @@ runs-on: ubuntu-latest
 
       - name: Run tests
         run: npm test
-
-
-
-
-
-
-
 
 ## Future improvements
 
