@@ -54,12 +54,12 @@ git clone git@github.com:Tech041/task_manager.git
 
 # Backend
 
-cd backend
+cd backend and then do
 npm install
 
 # Frontend (from the repository root)
 
-cd frontend
+cd frontend and then do
 npm install
 
 B. # Configuring environment variables
@@ -68,7 +68,7 @@ Real credentials are never committed. Each app ships a .env.example listing the 
 
 C.
 
-# Setting up the database
+## Setting up the database
 
 Run these from the `backend/` folder after `DATABASE_URL` is set in `.env`:
 
