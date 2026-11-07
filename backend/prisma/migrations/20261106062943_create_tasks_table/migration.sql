@@ -5,7 +5,7 @@ CREATE TYPE "TaskStatus" AS ENUM ('PENDING', 'IN_PROGRESS', 'COMPLETED');
 CREATE TABLE "tasks" (
     "id" SERIAL NOT NULL,
     "title" VARCHAR(150) NOT NULL,
-    "description" TEXT,
+    "description" TEXT NOT NULL,
     "status" "TaskStatus" NOT NULL DEFAULT 'PENDING',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

@@ -5,7 +5,7 @@ https://github.com/Tech041/task_manager
 2 **Task Manager**
 _A full-stack task management application. Users can view tasks, create new tasks, update a task's status, and filter tasks by status._
 
-**Stack**: React (TypeScript, Vite, Tailwind, React Query, Axios) · Node.js · Express 5 (TypeScript) · PostgreSQL (Neon) · Prisma · Zod · Mocha, Chai and Supertest · GitHub Actions
+**Stack**: React (TypeScript, Vite, Tailwind, React Query, Axios, React hookform  and Zod) · Node.js · Express 5 (TypeScript) · PostgreSQL (Neon) · Prisma · Zod · Mocha, Chai and Supertest · GitHub Actions
 
 ## Project structure
 
@@ -136,11 +136,27 @@ The tasks table must exist in that database
 
 ## cd backend
 
-  npm test
+npm run test
 
 3. **The SQL database creation script.**
 
-   npx prisma migrate dev --name create_tasks_table
+   -- CreateEnum
+   CREATE TYPE "TaskStatus" AS ENUM ('PENDING', 'IN_PROGRESS', 'COMPLETED');
+
+-- CreateTable
+CREATE TABLE "tasks" (
+"id" SERIAL NOT NULL,
+"title" VARCHAR(150) NOT NULL,
+"description" TEXT NOT NULL,
+"status" "TaskStatus" NOT NULL DEFAULT 'PENDING',
+"created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "tasks_pkey" PRIMARY KEY ("id")
+
+);
+
+-- CreateIndex
+CREATE INDEX "tasks_status_idx" ON "tasks"("status");
 
 4.**Your CI workflow configuration.**
 

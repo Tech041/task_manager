@@ -1,47 +1,49 @@
-import { useState, type FormEvent } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { useCreateTask } from "../hooks/useTask";
 import { getErrorMessage } from "../services/api";
 import ErrorMessage from "./ErrorMessage";
 
 const TITLE_MAX = 150;
 
+const taskFormSchema = z.object({
+  title: z
+    .string()
+    .trim()
+    .min(1, "Title is required.")
+    .max(TITLE_MAX, `Title must be ${TITLE_MAX} characters or fewer.`),
+  description: z.string().trim().min(1, "Description is required."),
+});
+
+type TaskFormValues = z.infer<typeof taskFormSchema>;
+
 export default function TaskForm() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [titleError, setTitleError] = useState<string | null>(null);
-  const [descriptionError, setDescriptionError] = useState<string | null>(null);
   const createTask = useCreateTask();
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<TaskFormValues>({
+    resolver: zodResolver(taskFormSchema),
+    defaultValues: { title: "", description: "" },
+  });
 
-    const trimmedTitle = title.trim();
-    const trimmedDescription = description.trim();
-    if (!trimmedTitle) {
-      setTitleError("Title is required.");
-      return;
-    }
-    if (!trimmedDescription) {
-      setDescriptionError("Description is required.");
-      return;
-    }
-    setTitleError(null);
-    setDescriptionError(null);
-
+  // `values` is already validated and trimmed by the Zod schema
+  const onSubmit = (values: TaskFormValues) => {
     createTask.mutate(
-      { title: trimmedTitle, description: trimmedDescription },
+      { ...values, status: "PENDING" },
       {
-        onSuccess: () => {
-          setTitle("");
-          setDescription("");
-        },
+        onSuccess: () => reset(),
       },
     );
   };
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className="space-y-4 rounded-xl bg-white p-5 shadow-sm ring-1 ring-slate-200"
     >
       <h2 className="text-lg font-semibold text-slate-900">New task</h2>
@@ -56,14 +58,13 @@ export default function TaskForm() {
         <input
           id="title"
           type="text"
-          value={title}
           maxLength={TITLE_MAX}
-          onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g. Write unit tests"
           className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+          {...register("title")}
         />
-        {titleError && (
-          <p className="mt-1 text-xs text-red-600">{titleError}</p>
+        {errors.title && (
+          <p className="mt-1 text-xs text-red-600">{errors.title.message}</p>
         )}
       </div>
 
@@ -77,12 +78,13 @@ export default function TaskForm() {
         <textarea
           id="description"
           rows={3}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
           className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+          {...register("description")}
         />
-        {descriptionError && (
-          <p className="mt-1 text-xs text-red-600">{descriptionError}</p>
+        {errors.description && (
+          <p className="mt-1 text-xs text-red-600">
+            {errors.description.message}
+          </p>
         )}
       </div>
 
