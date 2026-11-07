@@ -1,9 +1,9 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import helmet from "helmet";
 import cors from "cors";
-import taskRouter from "./src/module/task/task.route";
-import { NotFound } from "./src/lib/common/middleware/not-found";
-import { errorHandler } from "./src/lib/common/middleware/error-handler";
+import taskRouter from "./module/task/task.route";
+import { NotFound } from "./lib/common/middleware/not-found";
+import { errorHandler } from "./lib/common/middleware/error-handler";
 
 const corsOptions = {
   origin: [

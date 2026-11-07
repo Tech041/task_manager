@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import request from "supertest";
-import app from "../app";
+import app from "../src/app";
 import { prisma } from "../src/lib/prisma.js";
 
 const createTaskInDb = (overrides: Record<string, unknown> = {}) =>
